@@ -447,14 +447,16 @@ scheduler(void)
 {
   struct proc *p;
   struct cpu *c = mycpu();
+  struct proc * maxSyscallProc;
+  int maxSyscallCnt;
   
   c->proc = 0;
   for(;;){
     // Avoid deadlock by ensuring that devices can interrupt.
     intr_on();
 
-    struct proc * maxSyscallProc = 0;
-    int maxSyscallCnt = 0;
+    maxSyscallCnt = 0;
+    maxSyscallProc = 0;
 
     for(p = proc; p < &proc[NPROC]; p++) {
       
@@ -469,6 +471,8 @@ scheduler(void)
       release(&p->lock);
     }
 
+    p = maxSyscallProc;
+    //if (p == 0) continue;
     acquire(&p->lock);
     p->state = RUNNING;
     c->proc = p;
