@@ -92,7 +92,5 @@ sys_uptime(void)
 
 uint64
 sys_callcount(void) {
-  static int sysCallCount = 0;
-  sysCallCount ++;
-  return sysCallCount;
+  return myproc()->callcount;
 }

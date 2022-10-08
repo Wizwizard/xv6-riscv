@@ -28,6 +28,10 @@ main(int argc, char *argv[])
 
   //close(fd);
   printf("callcount:%d", callcount());
+  printf("callcount:%d", callcount());
+  printf("callcount:%d", callcount());
+  printf("callcount:%d", callcount());
+  printf("callcount:%d", callcount());
 
 //   if(argc <= 1){
 //     cat(0);
