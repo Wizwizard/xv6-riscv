@@ -24,7 +24,7 @@ cat(int fd)
 int
 main(int argc, char *argv[])
 {
-  int fd, i;
+  int fd = 10;
 
   close(fd);
 
