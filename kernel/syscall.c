@@ -133,8 +133,6 @@ static uint64 (*syscalls[])(void) = {
 void
 syscall(void)
 {
-  sysCallCount ++;
-
   int num;
   struct proc *p = myproc();
 
