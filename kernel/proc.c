@@ -447,38 +447,43 @@ scheduler(void)
 {
   struct proc *p;
   struct cpu *c = mycpu();
+
   struct proc * maxSyscallProc;
   int maxSyscallCnt;
+  struct proc *p2;
   
   c->proc = 0;
   for(;;){
     // Avoid deadlock by ensuring that devices can interrupt.
     intr_on();
 
-    maxSyscallCnt = -1;
-    maxSyscallProc = 0;
 
     for(p = proc; p < &proc[NPROC]; p++) {
+      maxSyscallCnt = -1;
+      maxSyscallProc = 0;
+        for (p2 = p; p2 < &proc[NPROC]; p2++) {
+        acquire(&p2->lock);
       
-      acquire(&p->lock);
-    
 
-      if (p->state == RUNNABLE && p->callcount > maxSyscallCnt) {
-        maxSyscallCnt = p->callcount;
-        maxSyscallProc = p;
+        if (p2->state == RUNNABLE && p2->callcount > maxSyscallCnt) {
+          maxSyscallCnt = p2->callcount;
+          maxSyscallProc = p2;
+        }
+
+        release(&p2->lock);
+
       }
+      p2 = maxSyscallProc;
+      if (p2 == 0) continue;
 
-      release(&p->lock);
+      acquire(&p2->lock);
+      p2->state = RUNNING;
+      c->proc = p2;
+      swtch(&c->context, &p2->context);
+      c->proc = 0;
+      release(&p2->lock);
+
     }
-    p = maxSyscallProc;
-    if (p == 0) continue;
-
-    acquire(&p->lock);
-    p->state = RUNNING;
-    c->proc = p;
-    swtch(&c->context, &p->context);
-    c->proc = 0;
-    release(&p->lock);
 
 
 
