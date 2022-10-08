@@ -24,9 +24,10 @@ cat(int fd)
 int
 main(int argc, char *argv[])
 {
-  int fd = 10;
+  //int fd = 10;
 
-  close(fd);
+  //close(fd);
+  printf("callcount:%d", callcount());
 
 //   if(argc <= 1){
 //     cat(0);
