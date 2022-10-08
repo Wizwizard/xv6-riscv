@@ -455,7 +455,7 @@ scheduler(void)
     // Avoid deadlock by ensuring that devices can interrupt.
     intr_on();
 
-    maxSyscallCnt = 0;
+    maxSyscallCnt = -1;
     maxSyscallProc = 0;
 
     for(p = proc; p < &proc[NPROC]; p++) {
@@ -470,9 +470,9 @@ scheduler(void)
 
       release(&p->lock);
     }
-
     p = maxSyscallProc;
-    //if (p == 0) continue;
+    if (p == 0) continue;
+
     acquire(&p->lock);
     p->state = RUNNING;
     c->proc = p;
@@ -482,25 +482,24 @@ scheduler(void)
 
 
 
-    // for(p = proc; p < &proc[NPROC]; p++) {
-    //   acquire(&p->lock);
-
-
-
-    //   if(p->state == RUNNABLE) {
-    //     // Switch to chosen process.  It is the process's job
-    //     // to release its lock and then reacquire it
-    //     // before jumping back to us.
-    //     p->state = RUNNING;
-    //     c->proc = p;
-    //     swtch(&c->context, &p->context);
-
-    //     // Process is done running for now.
-    //     // It should have changed its p->state before coming back.
-    //     c->proc = 0;
-    //   }
-    //   release(&p->lock);
-    // }
+//     for(p = proc; p < &proc[NPROC]; p++) {
+//       acquire(&p->lock);
+//
+//
+//       if(p->state == RUNNABLE) {
+//         // Switch to chosen process.  It is the process's job
+//         // to release its lock and then reacquire it
+//         // before jumping back to us.
+//         p->state = RUNNING;
+//         c->proc = p;
+//         swtch(&c->context, &p->context);
+//
+//         // Process is done running for now.
+//         // It should have changed its p->state before coming back.
+//         c->proc = 0;
+//       }
+//       release(&p->lock);
+//     }
   }
 }
 
