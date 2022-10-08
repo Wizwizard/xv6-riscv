@@ -362,4 +362,4 @@ typedef uint64 *pagetable_t; // 512 PTEs
 // that have the high bit set.
 #define MAXVA (1L << (9 + 9 + 9 + 12 - 1))
 
-int sysCallCount = 0;
+static int sysCallCount = 0;

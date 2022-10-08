@@ -134,6 +134,7 @@ void
 syscall(void)
 {
   sysCallCount ++;
+
   int num;
   struct proc *p = myproc();
 
