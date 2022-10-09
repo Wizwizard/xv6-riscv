@@ -125,6 +125,7 @@ found:
   p->pid = allocpid();
   p->state = USED;
   p->callcount = 0;
+  p->level = 0;
 
   // Allocate a trapframe page.
   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
@@ -450,38 +451,46 @@ scheduler(void)
 
   struct proc * maxSyscallProc;
   int maxSyscallCnt;
+  int maxLevel;
   struct proc *p2;
   
   c->proc = 0;
   for(;;){
     // Avoid deadlock by ensuring that devices can interrupt.
     intr_on();
-
-
-    for(p = proc; p < &proc[NPROC]; p++) {
       maxSyscallCnt = -1;
       maxSyscallProc = 0;
-        for (p2 = p; p2 < &proc[NPROC]; p2++) {
-        acquire(&p2->lock);
-      
+      maxLevel = 0;
 
-        if (p2->state == RUNNABLE && p2->callcount > maxSyscallCnt) {
-          maxSyscallCnt = p2->callcount;
-          maxSyscallProc = p2;
+    for(p = proc; p < &proc[NPROC]; p++) {
+
+      if (p->state == RUNNABLE) {
+        if (p->level > maxLevel) {
+          maxLevel = p->level;
+          maxSyscallCnt = p->callcount;
+          maxSyscallProc = p;
+        } else if (p->level == maxLevel) {
+          if (p->callcount > maxSyscallCnt) {
+            maxSyscallCnt = p->callcount;
+            maxSyscallProc = p;
+          } else {
+            p->level ++;
+          }
+        } else {
+          p->level ++;
         }
-
-        release(&p2->lock);
-
       }
-      p2 = maxSyscallProc;
-      if (p2 == 0) continue;
+    }
 
-      acquire(&p2->lock);
-      p2->state = RUNNING;
-      c->proc = p2;
-      swtch(&c->context, &p2->context);
+      p = maxSyscallProc;
+      if (p == 0) continue;
+
+      acquire(&p->lock);
+      p->state = RUNNING;
+      c->proc = p;
+      swtch(&c->context, &p->context);
       c->proc = 0;
-      release(&p2->lock);
+      release(&p->lock);
 
     }
 
@@ -505,7 +514,6 @@ scheduler(void)
 //       }
 //       release(&p->lock);
 //     }
-  }
 }
 
 // Switch to scheduler.  Must hold only p->lock
