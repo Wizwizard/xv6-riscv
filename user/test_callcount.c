@@ -5,9 +5,9 @@
 int
 main(int argc, char *argv[])
 {
-  callcount();
-  callcount();
-  callcount();
+  printf("callcount: %d\n", callcount());
+  printf("callcount: %d\n", callcount());
+  printf("callcount: %d\n", callcount());
 
   exit(0);
 }
