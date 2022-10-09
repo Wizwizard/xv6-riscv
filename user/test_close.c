@@ -5,13 +5,10 @@
 int
 main(int argc, char *argv[])
 {
+  // init a fd with 10
+  // however the fd it not a acutal open file fd
   int fd = 10;
-
   close(fd);
-  callcount();
-  callcount();
-  callcount();
- // printf("callcount:%d\n", callcount());
 
   exit(0);
 }
