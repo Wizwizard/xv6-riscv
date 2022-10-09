@@ -449,72 +449,72 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
 
-  c->proc = 0;
-  for(;;){
-    // Avoid deadlock by ensuring that devices can interrupt.
-    intr_on();
-    
-    for(p = proc; p < &proc[NPROC]; p++) {
-      acquire(&p->lock);
-
-
-      if(p->state == RUNNABLE) {
-        // Switch to chosen process.  It is the process's job
-        // to release its lock and then reacquire it
-        // before jumping back to us.
-        p->state = RUNNING;
-        c->proc = p;
-        swtch(&c->context, &p->context);
-
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        c->proc = 0;
-      }
-      release(&p->lock);
-    }
-  }
-
-  // struct proc * maxSyscallProc;
-  // int maxSyscallCnt;
-  // int maxLevel;
-  
   // c->proc = 0;
   // for(;;){
   //   // Avoid deadlock by ensuring that devices can interrupt.
   //   intr_on();
-  //     maxSyscallCnt = -1;
-  //     maxSyscallProc = 0;
-  //     maxLevel = 0;
-
+    
   //   for(p = proc; p < &proc[NPROC]; p++) {
-
-  //     if (p->state == RUNNABLE) {
-  //       if (p->level > maxLevel) {
-  //         maxLevel = p->level;
-  //         maxSyscallCnt = p->callcount;
-  //         maxSyscallProc = p;
-  //       } else if (p->level == maxLevel) {
-  //         if (p->callcount > maxSyscallCnt) {
-  //           maxSyscallCnt = p->callcount;
-  //           maxSyscallProc = p;
-  //         } else {
-  //           p->level ++;
-  //         }
-  //       } else {
-  //         p->level ++;
-  //       }
-  //     }
-  //   }
-
-  //     p = maxSyscallProc;
-  //     if (p == 0) continue;
-
   //     acquire(&p->lock);
-  //     p->state = RUNNING;
-  //     c->proc = p;
-  //     swtch(&c->context, &p->context);
-  //     c->proc = 0;
+
+
+  //     if(p->state == RUNNABLE) {
+  //       // Switch to chosen process.  It is the process's job
+  //       // to release its lock and then reacquire it
+  //       // before jumping back to us.
+  //       p->state = RUNNING;
+  //       c->proc = p;
+  //       swtch(&c->context, &p->context);
+
+  //       // Process is done running for now.
+  //       // It should have changed its p->state before coming back.
+  //       c->proc = 0;
+  //     }
   //     release(&p->lock);
+  //   }
+  // }
+
+  struct proc * maxSyscallProc;
+  int maxSyscallCnt;
+  int maxLevel;
+  
+  c->proc = 0;
+  for(;;){
+    // Avoid deadlock by ensuring that devices can interrupt.
+    intr_on();
+      maxSyscallCnt = -1;
+      maxSyscallProc = 0;
+      maxLevel = 0;
+
+    for(p = proc; p < &proc[NPROC]; p++) {
+
+      if (p->state == RUNNABLE) {
+        if (p->level > maxLevel) {
+          maxLevel = p->level;
+          maxSyscallCnt = p->callcount;
+          maxSyscallProc = p;
+        } else if (p->level == maxLevel) {
+          if (p->callcount > maxSyscallCnt) {
+            maxSyscallCnt = p->callcount;
+            maxSyscallProc = p;
+          } else {
+            p->level ++;
+          }
+        } else {
+          p->level ++;
+        }
+      }
+    }
+
+      p = maxSyscallProc;
+      if (p == 0) continue;
+
+      acquire(&p->lock);
+      p->state = RUNNING;
+      c->proc = p;
+      swtch(&c->context, &p->context);
+      c->proc = 0;
+      release(&p->lock);
 
   //   }
 
