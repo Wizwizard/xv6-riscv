@@ -5,12 +5,12 @@
 int
 main(int argc, char *argv[])
 {
-  //int fd = 10;
+  int fd = 10;
 
+  close(fd);
   callcount();
   callcount();
   callcount();
-  //close(fd);
  // printf("callcount:%d\n", callcount());
 
   exit(0);
