@@ -132,7 +132,9 @@ UPROGS=\
 	$U/_grind\
 	$U/_wc\
 	$U/_zombie\
-	$U/_test\
+	$U/_test_close\
+	$U/_test_callcount\
+	$U/_test_schedule\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
