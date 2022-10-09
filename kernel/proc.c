@@ -452,7 +452,6 @@ scheduler(void)
   struct proc * maxSyscallProc;
   int maxSyscallCnt;
   int maxLevel;
-  struct proc *p2;
   
   c->proc = 0;
   for(;;){
