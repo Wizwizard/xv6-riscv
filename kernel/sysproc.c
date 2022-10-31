@@ -112,18 +112,20 @@ sys_haspages(void) {
   int proc_id;
   argint(0, &proc_id);
   struct proc *p = myproc();
+  uint32 default_pg_cnt = 3;
   uint32 page_cnt = p->sz / PGSIZE;
   uint32 start = 0;
   uint32 end = 4095;
 
   acquire(&p->lock);
   printf("-----------------pages_report----------------------\n");
-  for (int i = 0; i < page_cnt; i ++) {
-    printf("start:%d, end:%d, content:%s\n", start + i*PGSIZE, end + i*PGSIZE, info[i]);
+  printf("%dpage has been allocated\n", page_cnt);
+  for (int i = 0; i < default_pg_cnt; i ++) {
+    printf("start:%d, end:%d, size: %d, content:%s\n", start + i*PGSIZE, end + i*PGSIZE, PGSIZE, info[i]);
   }
   uint32 heap_sz = p->sz - PGSIZE * page_cnt;
   if (heap_sz != 0){
-    printf("start:%d, end:%d, content:%s\n", start + page_cnt * PGSIZE, p->sz-1, info[page_cnt]);
+    printf("start:%d, end:%d, size: %d, content:%s\n", start + page_cnt * PGSIZE, p->sz-1, heap_sz, info[page_cnt]);
   }
   printf("--------------------------------------------------\n");
   release(&p->lock);
