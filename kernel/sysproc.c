@@ -125,7 +125,7 @@ sys_haspages(void) {
   }
   uint32 heap_sz = p->sz - PGSIZE * default_pg_cnt;
   if (heap_sz != 0){
-    printf("start:%d, end:%d, size: %d, content:%s\n", start + default_pg_cnt * PGSIZE, p->sz-1, heap_sz, info[page_cnt]);
+    printf("start:%d, end:%d, size: %d, content:%s\n", start + default_pg_cnt * PGSIZE, p->sz-1, heap_sz, info[default_pg_cnt]);
   }
   printf("--------------------------------------------------\n");
   release(&p->lock);
