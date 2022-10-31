@@ -121,11 +121,11 @@ sys_haspages(void) {
   printf("-----------------pages_report----------------------\n");
   printf("%dpage has been allocated\n", page_cnt);
   for (int i = 0; i < default_pg_cnt; i ++) {
-    printf("start:%d, end:%d, size: %d, content:%s\n", start + i*PGSIZE, end + i*PGSIZE, PGSIZE, info[i]);
+    printf("start: %d, end: %d, size: %d, page_cnt: %d, content: %s\n", start + i*PGSIZE, end + i*PGSIZE, PGSIZE, 1, info[i]);
   }
   uint32 heap_sz = p->sz - PGSIZE * default_pg_cnt;
   if (heap_sz != 0){
-    printf("start:%d, end:%d, size: %d, content:%s\n", start + default_pg_cnt * PGSIZE, p->sz-1, heap_sz, info[default_pg_cnt]);
+    printf("start: %d, end: %d, size: %d, page_cnt: %d, content: %s\n", start + default_pg_cnt * PGSIZE, p->sz-1, heap_sz, heap_sz / PGSIZE, info[default_pg_cnt]);
   }
   printf("--------------------------------------------------\n");
   release(&p->lock);
