@@ -23,6 +23,8 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int callcount(void);
+int myv2p(uint64 v_addr);
+int haspages(uint32 p_id);
 
 // ulib.c
 int stat(const char*, struct stat*);

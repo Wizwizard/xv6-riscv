@@ -37,3 +37,5 @@ entry("sbrk");
 entry("sleep");
 entry("uptime");
 entry("callcount");
+entry("myv2p");
+entry("haspages");

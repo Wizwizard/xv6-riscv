@@ -11,3 +11,14 @@ diff -u --recursive dist.orig/gold/errors.h dist/gold/errors.h
 +#include <string>
  
  #include "gold-threads.h"
+
+
+1480471
+1346053
+1374267
+1468346
+1469330
+1469524
+1468624
+1468633
+1466130

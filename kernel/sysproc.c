@@ -94,3 +94,54 @@ uint64
 sys_callcount(void) {
   return myproc()->callcount;
 }
+
+uint64
+sys_myv2p(void) {
+  uint64 addr;
+  argaddr(0, &addr);
+  uint64 pa = walkaddr(myproc(), addr);
+  return pa;
+}
+
+uint64
+sys_haspages(void) {
+
+
+  char info[][20] = {"code & static data", "guard page", "user stack", "heap"};
+  uint32 proc_id;
+  argint(0, &proc_id);
+  struct proc *p = myproc();
+  uint32 page_cnt = p->sz / PGSIZE;
+  uint32 start = 0;
+  uint32 end = 4095;
+  for (int i = 0; i < page_cnt; i ++) {
+    printf("start:%d, end:%d, content:%s\n", start + i*PGSIZE, end + i*PGSIZE, info[i]);
+  }
+  uint32 heap_sz = p->sz - PGSIZE * page_cnt;
+  if (heap_sz != 0){
+    printf("start:%d, end:%d, content:%s\n", start + page_cnt * PGSIZE, p->sz-1, info[page_cnt]);
+  }
+
+  return 0;
+
+  // for(p = proc; p < &proc[NPROC]; p++) {
+
+  //     if (p->state == RUNNABLE) {
+  //       if (p->level > maxLevel) {
+  //         maxLevel = p->level;
+  //         maxSyscallCnt = p->callcount;
+  //         maxSyscallProc = p;
+  //       } else if (p->level == maxLevel) {
+  //         if (p->callcount > maxSyscallCnt) {
+  //           maxSyscallCnt = p->callcount;
+  //           maxSyscallProc = p;
+  //         } else {
+  //           p->level ++;
+  //         }
+  //       } else {
+  //         p->level ++;
+  //       }
+  //     }
+  //   }
+  
+}
