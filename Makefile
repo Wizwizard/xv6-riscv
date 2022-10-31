@@ -135,6 +135,8 @@ UPROGS=\
 	$U/_test_close\
 	$U/_test_callcount\
 	$U/_test_schedule\
+	$U/_test_myv2p\
+	$U/_test_haspages\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
