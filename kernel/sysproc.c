@@ -99,7 +99,8 @@ uint64
 sys_myv2p(void) {
   uint64 addr;
   argaddr(0, &addr);
-  uint64 pa = walkaddr(myproc(), addr);
+  struct proc *p = myproc();
+  uint64 pa = walkaddr(p->pagetable, addr);
   return pa;
 }
 
@@ -108,7 +109,7 @@ sys_haspages(void) {
 
 
   char info[][20] = {"code & static data", "guard page", "user stack", "heap"};
-  uint32 proc_id;
+  int proc_id;
   argint(0, &proc_id);
   struct proc *p = myproc();
   uint32 page_cnt = p->sz / PGSIZE;
