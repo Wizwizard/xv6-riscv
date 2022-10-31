@@ -115,6 +115,8 @@ sys_haspages(void) {
   uint32 page_cnt = p->sz / PGSIZE;
   uint32 start = 0;
   uint32 end = 4095;
+
+  printf("-----------------pages_report----------------------\n");
   for (int i = 0; i < page_cnt; i ++) {
     printf("start:%d, end:%d, content:%s\n", start + i*PGSIZE, end + i*PGSIZE, info[i]);
   }
@@ -122,6 +124,7 @@ sys_haspages(void) {
   if (heap_sz != 0){
     printf("start:%d, end:%d, content:%s\n", start + page_cnt * PGSIZE, p->sz-1, info[page_cnt]);
   }
+  printf("--------------------------------------------------\n");
 
   return 0;
 
