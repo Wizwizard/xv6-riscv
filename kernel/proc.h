@@ -107,3 +107,5 @@ struct proc {
   uint64 callcount;           // number of syscall called
   uint64 level;               // priority level for multi-level scheduler
 };
+
+struct proc * get_procs(void);

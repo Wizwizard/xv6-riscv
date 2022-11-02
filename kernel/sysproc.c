@@ -107,11 +107,20 @@ sys_myv2p(void) {
 uint64
 sys_haspages(void) {
 
-
-  char info[][20] = {"code & static data", "guard page", "user stack", "heap"};
+  struct proc *proc = get_procs();
   int proc_id;
   argint(0, &proc_id);
-  struct proc *p = myproc();
+  struct proc *p;
+
+  for(p = proc; p < (&proc+NPROC); p++){
+    if(p->pid == proc_id){
+      break;
+    }
+  }
+
+  char info[][20] = {"code & static data", "guard page", "user stack", "heap"};
+
+  // struct proc *p = myproc();
   uint32 default_pg_cnt = 3;
   uint32 page_cnt = p->sz / PGSIZE;
   uint32 start = 0;
@@ -131,6 +140,7 @@ sys_haspages(void) {
   release(&p->lock);
 
   return 0;
+
 
   // for(p = proc; p < &proc[NPROC]; p++) {
 

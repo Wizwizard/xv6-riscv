@@ -730,3 +730,8 @@ procdump(void)
     printf("\n");
   }
 }
+
+struct proc * 
+get_procs(void) {
+  return proc;
+} 
