@@ -5,27 +5,39 @@
 int
 main(int argc, char *argv[])
 {
-  uint32 p_id = 1;
+  uint32 p_id = getpid();
   haspages(p_id);
 
-  // malloc 4096
-  char * str;
-  str = (char *) malloc (4096);
+//   // malloc 4096
+//   char * str;
+//   str = (char *) malloc (4096);
 
-  haspages(p_id);
-  // malloc another 4096
-  char * str2;
-  str2 = (char*) malloc (4096);
+//   haspages(p_id);
+//   // malloc another 4096
+//   char * str2;
+//   str2 = (char*) malloc (4096);
 
-  haspages(p_id);
+//   haspages(p_id);
 
-  // free first
-  free(str);
-  haspages(p_id);
+//   // free first
+//   free(str);
+//   haspages(p_id);
 
-  // free next
-  free(str2);
-  haspages(p_id);
+//   // free next
+//   free(str2);
+//   haspages(p_id);
+
+
+  if((p_id=fork()) == 0) {
+    char *str;
+    str = (char*)malloc(4096);
+    p_id = getpid();
+    has_pages(p_id);
+    free(str);
+    has_pages(p_id);
+  } else{
+    has_pages(p_id);
+  }
 
   exit(0);
 }
