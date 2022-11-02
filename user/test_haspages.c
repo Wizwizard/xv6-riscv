@@ -32,11 +32,11 @@ main(int argc, char *argv[])
     char *str;
     str = (char*)malloc(4096);
     p_id = getpid();
-    has_pages(p_id);
+    haspages(p_id);
     free(str);
-    has_pages(p_id);
+    haspages(p_id);
   } else{
-    has_pages(p_id);
+    haspages(p_id);
   }
 
   exit(0);
