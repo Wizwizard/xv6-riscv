@@ -732,7 +732,7 @@ procdump(void)
 }
 
 struct proc * 
-get_procs(int p_id) {
+get_proc(int p_id) {
   struct proc * p;
 
     for(p = proc; p < &proc[NPROC]; p++){
@@ -741,5 +741,5 @@ get_procs(int p_id) {
     }
   }
 
-  return proc;
+  return p;
 } 
