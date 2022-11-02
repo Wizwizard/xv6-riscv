@@ -752,9 +752,10 @@ myv2p() {
   uint64 vaddr;
   argaddr(0, &vaddr);
   uint64 pa;
- 
-  printf("virutal address larger than maxmum\n");
-  return 0;
+  if(vaddr > MAXVA) {
+    printf("virutal address larger than maxmum\n");
+    return 0;
+  }
   printf("MAXVA: %p\n", MAXVA);
   pa = walkaddr(p->pagetable, vaddr);
   uint64 mask = 0x0000000000000fff;
