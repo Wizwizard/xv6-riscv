@@ -97,29 +97,7 @@ sys_callcount(void) {
 
 uint64
 sys_myv2p(void) {
-  struct proc *p;
-  
-  p = myproc();
-  uint64 vaddr;
-  argaddr(0, &vaddr);
-  uint64 pa;
- 
-  printf("virutal address larger than maxmum\n");
-  return 0;
-  printf("MAXVA: %p\n", MAXVA);
-  pa = walkaddr(p->pagetable, vaddr);
-  uint64 mask = 0x0000000000000fff;
-  uint64 offset = vaddr & mask;
-  uint64 paandva = pa ^ offset;
-  if (pa !=0)
-  {
-    printf("Succeed!!");
-    printf("This is physical address %p\n", paandva);
-  }else
-  {
-    printf("Physical address not found %d \n",vaddr);
-  }
-  return pa;
+  return myv2p();
 }
 
 
