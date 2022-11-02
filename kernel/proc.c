@@ -732,6 +732,14 @@ procdump(void)
 }
 
 struct proc * 
-get_procs(void) {
+get_procs(int p_id) {
+  struct proc * p;
+
+    for(p = proc; p < &proc[NPROC]; p++){
+    if(p->pid == p_id){
+      break;
+    }
+  }
+
   return proc;
 } 
