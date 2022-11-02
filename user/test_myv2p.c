@@ -17,23 +17,23 @@ main(int argc, char *argv[])
     {
       break;
     }
-    int r = hexi-i;
-    int result = 1;
+    long r = hexi-i;
+    long result = 1;
      while (r != 0)
     {
         result *= 16;
         --r;
     }
-    if((int)str[i]>70)
+    if((long)str[i]>70)
     {
-      va += ((int)str[i]-87)*result;
+      va += ((long)str[i]-87)*result;
     }else{
-      va += ((int)str[i]-48)*result;
+      va += ((long)str[i]-48)*result;
     }
     i--;
   }
 
   printf("virtual address: %p\n", va );
-  myv2p(va);
+  myV2p(va);
   exit(0);
 }
