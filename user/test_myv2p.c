@@ -34,6 +34,6 @@ main(int argc, char *argv[])
   }
 
   printf("virtual address: %p\n", va );
-  myV2p(va);
+  myv2p(va);
   exit(0);
 }
