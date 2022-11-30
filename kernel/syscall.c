@@ -104,6 +104,7 @@ extern uint64 sys_close(void);
 extern uint64 sys_callcount(void);
 extern uint64 sys_myv2p(void);
 extern uint64 sys_haspages(void);
+extern uint64 sys_mksmfdir(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -132,6 +133,7 @@ static uint64 (*syscalls[])(void) = {
 [SYS_callcount] sys_callcount,
 [SYS_myv2p] sys_myv2p,
 [SYS_haspages] sys_haspages,
+[SYS_mksmfdir] sys_mksmfdir,
 };
 
 void

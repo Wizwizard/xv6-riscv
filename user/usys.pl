@@ -39,3 +39,4 @@ entry("uptime");
 entry("callcount");
 entry("myv2p");
 entry("haspages");
+entry("mksmfdir");

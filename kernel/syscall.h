@@ -23,4 +23,5 @@
 #define SYS_callcount 22
 #define SYS_myv2p 23
 #define SYS_haspages 24
+#define SYS_mksmfdir 25
 
