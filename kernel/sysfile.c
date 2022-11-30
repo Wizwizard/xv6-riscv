@@ -273,7 +273,7 @@ create(char *path, short type, short major, short minor)
   ip->nlink = 1;
   iupdate(ip);
 
-  if(type == T_DIR){  // Create . and .. entries.
+  if(type == T_DIR || type == T_SDIR){  // Create . and .. entries.
     // No ip->nlink++ for ".": avoid cyclic ref count.
     if(dirlink(ip, ".", ip->inum) < 0 || dirlink(ip, "..", dp->inum) < 0)
       goto fail;
@@ -282,7 +282,7 @@ create(char *path, short type, short major, short minor)
   if(dirlink(dp, name, ip->inum) < 0)
     goto fail;
 
-  if(type == T_DIR){
+  if(type == T_DIR || type == T_SDIR){
     // now that success is guaranteed:
     dp->nlink++;  // for ".."
     iupdate(dp);
