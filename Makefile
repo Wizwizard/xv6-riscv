@@ -137,6 +137,7 @@ UPROGS=\
 	$U/_test_schedule\
 	$U/_test_myv2p\
 	$U/_test_haspages\
+	$U/_mksmfdir\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
