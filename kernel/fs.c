@@ -554,7 +554,7 @@ dirlookup(struct inode *dp, char *name, uint *poff)
   uint off, inum;
   struct dirent de;
 
-  if(dp->type != T_DIR)
+  if(dp->type != T_DIR && dp->type != T_SDIR)
     panic("dirlookup not DIR");
 
   for(off = 0; off < dp->size; off += sizeof(de)){
@@ -660,7 +660,7 @@ namex(char *path, int nameiparent, char *name)
 
   while((path = skipelem(path, name)) != 0){
     ilock(ip);
-    if(ip->type != T_DIR){
+    if(ip->type != T_DIR && ip->type != T_SDIR){
       iunlockput(ip);
       return 0;
     }
