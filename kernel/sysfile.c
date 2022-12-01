@@ -263,6 +263,7 @@ create(char *path, short type, short major, short minor)
   }
 
   if(type == T_FILE && dp->type == T_SDIR) {
+    printf("parent dir type is T_SDIR, so switch to small file mode\n");
     type = T_SFILE;
   }
 

@@ -472,6 +472,7 @@ int
 readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
 {
   if(ip->type == T_SFILE) {
+    printf("ip->type=T_SFILE, switch to small file read mode\n");
     return readsi(ip, user_dst, dst, off, n);
   }
   uint tot, m;
@@ -504,6 +505,11 @@ readsi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
   //   n = ip->size - off;
   // }
 
+  if (n > ip->size) {
+    printf("read length:%d greater than ip->size, truncated to ip->size:%d", n, ip->size);
+    n = ip->size;
+  }
+
   either_copyout(user_dst, dst, ip->addrs, n);
 
   return n;
@@ -521,6 +527,7 @@ int
 writei(struct inode *ip, int user_src, uint64 src, uint off, uint n)
 {
   if(ip->type == T_SFILE) {
+    printf("ip->type=T_SFILE, switch to small file write mode\n");
     return writesi(ip, user_src, src, off, n);
   }
 
@@ -562,6 +569,7 @@ writesi(struct inode *ip, int user_src, uint64 src, uint off, uint n)
 {
   // exceed the inode data size
   if (off + n > NSFSIZE) {
+    printf("write exceed the size limit of file!!!\n");
     return -1;
   }
   // to-do : handle error
