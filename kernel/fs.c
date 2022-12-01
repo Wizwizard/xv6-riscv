@@ -504,7 +504,7 @@ readsi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
     n = ip->size - off;
   }
 
-  either_copyout(user_dst, dst, ip->addrs+off, n);
+  either_copyout(user_dst, dst, ip->addrs, n);
 
   return n;
 
