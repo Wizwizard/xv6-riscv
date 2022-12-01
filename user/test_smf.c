@@ -34,7 +34,7 @@ main(int argc, char *argv[])
       exit(1);
     }
 
-    char * sout = (char *)malloc(10*sizeof(char));
+    char * sout = (char *)malloc(10);
 
     n = read(fd, (void*)sout, strlen(sin));
     if(n > 0){
