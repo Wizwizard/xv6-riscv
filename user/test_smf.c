@@ -11,7 +11,8 @@
 int
 main(int argc, char *argv[])
 {
-    int fd = open("smfdir/sfile1", O_CREATE|O_WRONLY);
+    int fd, n;
+    fd = open("smfdir/sfile1", O_CREATE|O_WRONLY);
     if(fd < 0){
       printf("open(smfdir/sfile1) failed\n");
       exit(1);
@@ -19,7 +20,7 @@ main(int argc, char *argv[])
 
     char * sin = "123";
 
-    int n = write(fd, (void*)sin, strlen(sin));
+    n = write(fd, (void*)sin, strlen(sin));
     if(n >= 0){
       printf("write(fd, %s, %d) returned %d, not -1\n", sin, strlen(sin), n);
       exit(1);
@@ -27,7 +28,7 @@ main(int argc, char *argv[])
 
     close(fd);
 
-    int fd = open("smfdir/sfile1", O_RDONLY);
+    fd = open("smfdir/sfile1", O_RDONLY);
     if(fd < 0){
       printf("open(smfdir/sfile1) failed\n");
       exit(1);
@@ -35,7 +36,7 @@ main(int argc, char *argv[])
 
     char * sout = (char *)malloc(10*sizeof(char));
 
-    int n = read(fd, (void*)sout, strlen(sin));
+    n = read(fd, (void*)sout, strlen(sin));
     if(n > 0){
       printf("read(fd, %s, %d) returned %d, not -1 or 0\n", sout, strlen(sin), n);
       exit(1);
