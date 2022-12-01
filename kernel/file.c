@@ -121,7 +121,7 @@ fileread(struct file *f, uint64 addr, int n)
     ilock(f->ip);
     if((r = readi(f->ip, 1, addr, f->off, n)) > 0)
     {
-      if(f->ip->type != T_SDIR && f->ip->type != T_SFILE)
+      // if(f->ip->type != T_SDIR && f->ip->type != T_SFILE)
         f->off += r;
     }
     iunlock(f->ip);

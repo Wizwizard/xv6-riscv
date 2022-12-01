@@ -506,7 +506,7 @@ readsi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
   // }
 
   if (n > ip->size) {
-    printf("read length:%d greater than ip->size, truncated to ip->size:%d", n, ip->size);
+    printf("read length:%d greater than ip->size, truncated to ip->size:%d\n", n, ip->size);
     n = ip->size;
   }
 
