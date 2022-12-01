@@ -23,9 +23,10 @@ main(int argc, char *argv[])
 
 
     // test basic small file read & write
+    printf("\ntest basic small file read & write\n");
 
     char * test_file1 = "smfdir1/sfile1";
-
+    char * sin = "basic test;";
 
     int fd, n;
     fd = open(test_file1, O_CREATE|O_WRONLY);
@@ -34,7 +35,6 @@ main(int argc, char *argv[])
       exit(1);
     }
 
-    char * sin = "basic test;";
 
     n = write(fd, (void*)sin, strlen(sin));
     if(n >= 0){
@@ -57,13 +57,18 @@ main(int argc, char *argv[])
     close(fd);
 
     // test append data into the small file and read
+
+    printf("\ntest append data into the small file and read\n");
+
+    char * sin2 = "append test;";
+
+
     fd = open(test_file1, O_CREATE|O_WRONLY);
     if(fd < 0){
       printf("open(%s) failed\n", test_file1);
       exit(1);
     }
 
-    char * sin2 = "append test;";
 
     n = write(fd, (void*)sin2, strlen(sin2));
     if(n >= 0){
@@ -78,8 +83,6 @@ main(int argc, char *argv[])
       exit(1);
     }
 
-    char * sout = (char *)malloc(10);
-
     n = read(fd, (void*)sout, strlen(sin) + strlen(sin2));
     if(n > 0){
       printf("read(fd, %s, %d) returned %d, not -1 or 0\n", sout, strlen(sin) + strlen(sin2), n);
@@ -87,14 +90,15 @@ main(int argc, char *argv[])
     close(fd);
 
     // test overflow 
+    printf("\ntest overflow\n");
+
     char * sin3 = "overflow!overflow!overflow!overflow!overflow!overflow!overflow!overflow!overflow!";
+
     fd = open(test_file1, O_CREATE|O_WRONLY);
     if(fd < 0){
       printf("open(%s) failed\n", test_file1);
       exit(1);
     }
-
-    char * sin2 = "append test;";
 
     n = write(fd, (void*)sin, strlen(sin3));
     if(n >= 0){
@@ -106,6 +110,9 @@ main(int argc, char *argv[])
     close(fd);
 
     // read exceed size
+
+    printf("\ntest read exceed size\n");
+
 
     fd = open(test_file1, O_RDONLY);
     if(fd < 0){
