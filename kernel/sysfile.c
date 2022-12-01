@@ -136,7 +136,7 @@ sys_link(void)
   }
 
   ilock(ip);
-  if(ip->type == T_DIR){
+  if(ip->type == T_DIR || ip->type == T_SDIR){
     iunlockput(ip);
     end_op();
     return -1;
@@ -256,10 +256,15 @@ create(char *path, short type, short major, short minor)
   if((ip = dirlookup(dp, name, 0)) != 0){
     iunlockput(dp);
     ilock(ip);
-    if(type == T_FILE && (ip->type == T_FILE || ip->type == T_DEVICE))
+    if(type == T_FILE && (ip->type == T_FILE || ip->type == T_SDIR || ip->type == T_DEVICE))
       return ip;
     iunlockput(ip);
     return 0;
+  }
+
+  if(type == T_FILE && dp->type == T_SDIR) {
+    printf("parent dir type is T_SDIR, so switch to small file mode\n");
+    type = T_SFILE;
   }
 
   if((ip = ialloc(dp->dev, type)) == 0){
@@ -273,7 +278,7 @@ create(char *path, short type, short major, short minor)
   ip->nlink = 1;
   iupdate(ip);
 
-  if(type == T_DIR){  // Create . and .. entries.
+  if(type == T_DIR || type == T_SDIR){  // Create . and .. entries.
     // No ip->nlink++ for ".": avoid cyclic ref count.
     if(dirlink(ip, ".", ip->inum) < 0 || dirlink(ip, "..", dp->inum) < 0)
       goto fail;
@@ -282,7 +287,7 @@ create(char *path, short type, short major, short minor)
   if(dirlink(dp, name, ip->inum) < 0)
     goto fail;
 
-  if(type == T_DIR){
+  if(type == T_DIR || type == T_SDIR){
     // now that success is guaranteed:
     dp->nlink++;  // for ".."
     iupdate(dp);
@@ -328,7 +333,7 @@ sys_open(void)
       return -1;
     }
     ilock(ip);
-    if(ip->type == T_DIR && omode != O_RDONLY){
+    if((ip->type == T_DIR || ip->type == T_SDIR) && omode != O_RDONLY){
       iunlockput(ip);
       end_op();
       return -1;
@@ -435,7 +440,7 @@ sys_chdir(void)
     return -1;
   }
   ilock(ip);
-  if(ip->type != T_DIR){
+  if(ip->type != T_DIR && ip->type != T_SDIR){
     iunlockput(ip);
     end_op();
     return -1;

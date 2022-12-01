@@ -120,7 +120,10 @@ fileread(struct file *f, uint64 addr, int n)
   } else if(f->type == FD_INODE){
     ilock(f->ip);
     if((r = readi(f->ip, 1, addr, f->off, n)) > 0)
-      f->off += r;
+    {
+      // if(f->ip->type != T_SDIR && f->ip->type != T_SFILE)
+        f->off += r;
+    }
     iunlock(f->ip);
   } else {
     panic("fileread");

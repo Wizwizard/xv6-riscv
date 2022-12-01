@@ -471,6 +471,10 @@ stati(struct inode *ip, struct stat *st)
 int
 readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
 {
+  if(ip->type == T_SFILE) {
+    printf("ip->type=T_SFILE, switch to small file read mode\n");
+    return readsi(ip, user_dst, dst, off, n);
+  }
   uint tot, m;
   struct buf *bp;
 
@@ -494,6 +498,23 @@ readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
   }
   return tot;
 }
+int
+readsi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
+{
+  // if (off + n > ip->size) {
+  //   n = ip->size - off;
+  // }
+
+  if (n > ip->size) {
+    printf("read length:%d greater than ip->size, truncated to ip->size:%d\n", n, ip->size);
+    n = ip->size;
+  }
+
+  either_copyout(user_dst, dst, ip->addrs, n);
+
+  return n;
+
+}
 
 // Write data to inode.
 // Caller must hold ip->lock.
@@ -505,6 +526,11 @@ readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
 int
 writei(struct inode *ip, int user_src, uint64 src, uint off, uint n)
 {
+  if(ip->type == T_SFILE) {
+    printf("ip->type=T_SFILE, switch to small file write mode\n");
+    return writesi(ip, user_src, src, off, n);
+  }
+
   uint tot, m;
   struct buf *bp;
 
@@ -538,6 +564,23 @@ writei(struct inode *ip, int user_src, uint64 src, uint off, uint n)
   return tot;
 }
 
+int
+writesi(struct inode *ip, int user_src, uint64 src, uint off, uint n)
+{
+  // exceed the inode data size
+  if (off + n > NSFSIZE) {
+    printf("write exceed the size limit of file!!!\n");
+    return -1;
+  }
+  // to-do : handle error
+  either_copyin(ip->addrs+off, user_src, src, n);
+  // memcpy(ip->addrs+off, src, n);
+  ip->size = ip->size + n;
+  iupdate(ip);
+
+  return n;
+}
+
 // Directories
 
 int
@@ -554,7 +597,7 @@ dirlookup(struct inode *dp, char *name, uint *poff)
   uint off, inum;
   struct dirent de;
 
-  if(dp->type != T_DIR)
+  if(dp->type != T_DIR && dp->type != T_SDIR)
     panic("dirlookup not DIR");
 
   for(off = 0; off < dp->size; off += sizeof(de)){
@@ -660,7 +703,7 @@ namex(char *path, int nameiparent, char *name)
 
   while((path = skipelem(path, name)) != 0){
     ilock(ip);
-    if(ip->type != T_DIR){
+    if(ip->type != T_DIR && ip->type != T_SDIR){
       iunlockput(ip);
       return 0;
     }
