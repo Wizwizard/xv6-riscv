@@ -566,8 +566,8 @@ writesi(struct inode *ip, int user_src, uint64 src, uint off, uint n)
     return -1;
   }
   // to-do : handle error
-  // either_copyin(ip->addrs+off, user_src, src, n);
-  memcpy(ip->addrs+off, src, n);
+  either_copyin(ip->addrs+off, user_src, src, n);
+  // memcpy(ip->addrs+off, src, n);
   iupdate(ip);
 
   return n;
