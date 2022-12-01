@@ -63,7 +63,7 @@ main(int argc, char *argv[])
     char * sin2 = "append test;";
 
 
-    fd = open(test_file1, O_CREATE|O_WRONLY);
+    fd = open(test_file1, O_WRONLY);
     if(fd < 0){
       printf("open(%s) failed\n", test_file1);
       exit(1);
@@ -94,7 +94,7 @@ main(int argc, char *argv[])
 
     char * sin3 = "overflow!overflow!overflow!overflow!overflow!overflow!overflow!overflow!overflow!";
 
-    fd = open(test_file1, O_CREATE|O_WRONLY);
+    fd = open(test_file1, O_WRONLY);
     if(fd < 0){
       printf("open(%s) failed\n", test_file1);
       exit(1);
