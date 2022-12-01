@@ -58,36 +58,36 @@ main(int argc, char *argv[])
 
     // test append data into the small file and read
 
-    printf("\ntest append data into the small file and read\n");
+    // printf("\ntest append data into the small file and read\n");
 
-    char * sin2 = "append test;";
-
-
-    fd = open(test_file1, O_WRONLY);
-    if(fd < 0){
-      printf("open(%s) failed\n", test_file1);
-      exit(1);
-    }
+    // char * sin2 = "append test;";
 
 
-    n = write(fd, (void*)sin2, strlen(sin2));
-    if(n >= 0){
-      printf("write(fd, %s, %d) returned %d, not -1\n", sin2, strlen(sin2), n);
-    }
+    // fd = open(test_file1, O_WRONLY);
+    // if(fd < 0){
+    //   printf("open(%s) failed\n", test_file1);
+    //   exit(1);
+    // }
 
-    close(fd);
 
-    fd = open(test_file1, O_RDONLY);
-    if(fd < 0){
-      printf("open(%s) failed\n", test_file1);
-      exit(1);
-    }
+    // n = write(fd, (void*)sin2, strlen(sin2));
+    // if(n >= 0){
+    //   printf("write(fd, %s, %d) returned %d, not -1\n", sin2, strlen(sin2), n);
+    // }
 
-    n = read(fd, (void*)sout, strlen(sin) + strlen(sin2));
-    if(n > 0){
-      printf("read(fd, %s, %d) returned %d, not -1 or 0\n", sout, strlen(sin) + strlen(sin2), n);
-    } 
-    close(fd);
+    // close(fd);
+
+    // fd = open(test_file1, O_RDONLY);
+    // if(fd < 0){
+    //   printf("open(%s) failed\n", test_file1);
+    //   exit(1);
+    // }
+
+    // n = read(fd, (void*)sout, strlen(sin) + strlen(sin2));
+    // if(n > 0){
+    //   printf("read(fd, %s, %d) returned %d, not -1 or 0\n", sout, strlen(sin) + strlen(sin2), n);
+    // } 
+    // close(fd);
 
     // test overflow 
     printf("\ntest overflow\n");
