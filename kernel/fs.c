@@ -471,6 +471,9 @@ stati(struct inode *ip, struct stat *st)
 int
 readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
 {
+  if(ip->type == T_SFILE) {
+    return readsi(ip, user_dst, dst, off, n);
+  }
   uint tot, m;
   struct buf *bp;
 
@@ -494,6 +497,18 @@ readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
   }
   return tot;
 }
+int
+readsi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
+{
+  if (off + n > ip->size) {
+    n = ip->size - off;
+  }
+
+  either_copyout(user_dst, dst, ip->addrs+off, n);
+
+  return n;
+
+}
 
 // Write data to inode.
 // Caller must hold ip->lock.
@@ -505,6 +520,10 @@ readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
 int
 writei(struct inode *ip, int user_src, uint64 src, uint off, uint n)
 {
+  if(ip->type == T_SFILE) {
+    return writesi(ip, user_src, src, off, n);
+  }
+
   uint tot, m;
   struct buf *bp;
 
@@ -536,6 +555,20 @@ writei(struct inode *ip, int user_src, uint64 src, uint off, uint n)
   iupdate(ip);
 
   return tot;
+}
+
+int
+writesi(struct inode *ip, int user_src, uint64 src, uint off, uint n)
+{
+  // exceed the inode data size
+  if (off + n > NSFSIZE) {
+    return -1;
+  }
+  // to-do : handle error
+  either_copyin(ip->addrs+off, user_src, src, n);
+  iupdate(ip);
+
+  return n;
 }
 
 // Directories

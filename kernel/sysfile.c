@@ -256,10 +256,14 @@ create(char *path, short type, short major, short minor)
   if((ip = dirlookup(dp, name, 0)) != 0){
     iunlockput(dp);
     ilock(ip);
-    if(type == T_FILE && (ip->type == T_FILE || ip->type == T_DEVICE))
+    if(type == T_FILE && (ip->type == T_FILE || ip->type == T_SDIR || ip->type == T_DEVICE))
       return ip;
     iunlockput(ip);
     return 0;
+  }
+
+  if(type == T_FILE && dp->type == T_SDIR) {
+    type = T_SFILE;
   }
 
   if((ip = ialloc(dp->dev, type)) == 0){
@@ -328,7 +332,7 @@ sys_open(void)
       return -1;
     }
     ilock(ip);
-    if(ip->type == T_DIR && omode != O_RDONLY){
+    if((ip->type == T_DIR || ip->type == T_SDIR) && omode != O_RDONLY){
       iunlockput(ip);
       end_op();
       return -1;
