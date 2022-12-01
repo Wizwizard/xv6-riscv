@@ -126,5 +126,23 @@ main(int argc, char *argv[])
     } 
     close(fd);
 
+    // test link
+
+    printf("\ntest link, link smfdir1/sfile1 to sfile2\n");
+    char * test_file2 = "sfile2";
+    link(test_file1, test_file2);
+
+    fd = open(test_file1, O_RDONLY);
+    if(fd < 0){
+      printf("open(%s) failed\n", test_file1);
+      exit(1);
+    }
+
+    n = read(fd, (void*)sout, strlen(sout));
+    if(n > 0){
+      printf("read(fd, %s, %d) returned %d, not -1 or 0\n", sout, strlen(sout), n);
+    } 
+    close(fd);
+
     return 0;
 }
