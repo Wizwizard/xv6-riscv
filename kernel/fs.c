@@ -500,9 +500,9 @@ readi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
 int
 readsi(struct inode *ip, int user_dst, uint64 dst, uint off, uint n)
 {
-  if (off + n > ip->size) {
-    n = ip->size - off;
-  }
+  // if (off + n > ip->size) {
+  //   n = ip->size - off;
+  // }
 
   either_copyout(user_dst, dst, ip->addrs, n);
 
